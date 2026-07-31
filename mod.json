@@ -11,6 +11,9 @@
 	"version": "v1.0.1",
 	"developer": "miskaa",
 	"description": "Enhances Geometry Dash UI",
+	"resources": {
+		"sprites": ["resources/*.png"]
+	},
 	"dependencies": {
 		"geode.node-ids": {"version": ">=v1.23.3","required": true},
 		"alphalaneous.alphas-ui-pack": {"version": ">=1.1.1","required": true}

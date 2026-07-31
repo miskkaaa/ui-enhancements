@@ -4,6 +4,7 @@
 #include <Geode/ui/SliderNode.hpp>
 #include "../thing.hpp"
 #include "../helper/UIScaling.hpp"
+#include "Geode/ui/BasedButtonSprite.hpp"
 
 // stolen from gh:Alphalaneous/Tinker
 // got permission i think https://discord.com/channels/911701438269386882/911702535373475870/1532654810317324358
@@ -18,6 +19,10 @@ class $modify(MyEditorPauseLayer, EditorPauseLayer) {
         CleanPause::onPause(this);
 
         return true;
+    }
+
+    void openKeybinds(CCObject*) { // MyEditorPauseLayer
+        geode::openSettingsPopup(geode::Loader::get()->getLoadedMod("geode.custom-keybinds"), false);
     }
 };
 
@@ -140,6 +145,15 @@ void CleanPause::onPause(EditorPauseLayer* pauseLayer) {
     sfxSlider->setValue(fmod->m_sfxVolume * 100.f);
     pauseLayer->addChild(sfxSlider);
 
+    auto actionsMenu = pauseLayer->getChildByID("actions-menu");
+    if (actionsMenu) {
+        if (auto keysButton = actionsMenu->getChildByID("keys-button")) {
+            if (thing::IsCustomKeybindsInstalled()) {
+                keysButton->setVisible(false);
+            }
+        }
+    }
+
     scaleAndPosition(pauseLayer, scale);
 }
 
@@ -210,6 +224,25 @@ void CleanPause::scaleAndPosition(EditorPauseLayer *pauseLayer, float scale) {
     if (bottomMenu) {
         bottomMenu->setScale(0.9f * scale);
         bottomMenu->setPosition({winSize.width / 2.f, (28.f * 0.9f) * scale});
+
+        if (thing::IsCustomKeybindsInstalled()) {
+            auto icon = CCSprite::create("keybinds.png"_spr);
+
+            auto buttonSprite = CircleButtonSprite::create(
+                icon,
+                CircleBaseColor::Green,
+                CircleBaseSize::Small
+            );
+
+            auto button = CCMenuItemSpriteExtra::create(
+                buttonSprite,
+                pauseLayer,
+                menu_selector(MyEditorPauseLayer::openKeybinds)
+            );
+
+            bottomMenu->addChild(button);
+            bottomMenu->updateLayout();
+        }
     }
 
     auto bg = pauseLayer->getChildByID("background"_spr);

@@ -10,3 +10,13 @@ public: //i have to add public here
 
     static void onPause(EditorPauseLayer* pauseLayer);
 };
+
+namespace thing {
+    inline bool IsCustomKeybindsInstalled() {
+        if (auto mod = Loader::get()->getInstalledMod("geode.custom-keybinds")) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+}
