@@ -44,9 +44,12 @@ class $modify(MyOptionsLayer, OptionsLayer) {
         musicLabelContainer->updateLayout();
 
         auto musicSlider = SliderNode::create([fmod](SliderNode* sender, float value) {
-            fmod->m_musicVolume = value / 100.f;
+            value = std::clamp(value, 0.f, 100.f);
+            float volume = value / 100.f;
+
+            fmod->m_musicVolume = volume;
             if (fmod->m_backgroundMusicChannel) {
-                fmod->m_backgroundMusicChannel->setVolume(value / 100.f);
+                fmod->m_backgroundMusicChannel->setVolume(volume);
             }
         });
         musicSlider->setID("music-slider"_spr);
@@ -77,9 +80,13 @@ class $modify(MyOptionsLayer, OptionsLayer) {
         sfxLabelContainer->updateLayout();
 
         auto sfxSlider = SliderNode::create([fmod](SliderNode* sender, float value) {
-            fmod->m_sfxVolume = value / 100.f;
+            value = std::clamp(value, 0.f, 100.f);
+
+            float volume = value / 100.f;
+
+            fmod->m_sfxVolume = volume;
             if (fmod->m_globalChannel) {
-                fmod->m_globalChannel->setVolume(value / 100.f);
+                fmod->m_globalChannel->setVolume(volume);
             }
         });
         sfxSlider->setID("sfx-slider"_spr);
@@ -95,8 +102,8 @@ class $modify(MyOptionsLayer, OptionsLayer) {
 
         float y = center.y - 70.f;
 
-        float leftX = center.x - 78.f;
-        float rightX = center.x + 78.f;
+        float leftX = center.x - 87.f;
+        float rightX = center.x + 87.f;
 
         musicSlider->setScale(sliderScale);
         musicSlider->setPosition({leftX, y});
