@@ -4,4 +4,5 @@ Enhances Geometry Dash UI
 # Currently modifies:
 - EditorPauseLayer
 - OptionsLayer
+- GJShopLayer
 - (more coming soon)
