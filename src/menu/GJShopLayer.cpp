@@ -8,8 +8,6 @@
 
 #include <alphalaneous.alphas-ui-pack/include/API.hpp>
 
-// TODO: fix https://cdn.discordapp.com/attachments/1496901371444728009/1532784275018092635/image.png
-
 using namespace geode::prelude;
 using namespace alpha::prelude;
 
@@ -57,10 +55,19 @@ class $modify(MyShopLayer, GJShopLayer) {
         scroll->setTouchPriority(-500);
 
         auto content = scroll->getContentLayer();
+        auto layout = RowLayout::create()
+            ->setAxisReverse(false)
+            ->setAxisAlignment(AxisAlignment::Start)
+            ->setCrossAxisAlignment(AxisAlignment::Between)
+            ->setCrossAxisLineAlignment(AxisAlignment::Even)
+            ->setGap(-175.0f)
+            ->setPadding({-37.0f, 0.0f, -375.0f, -7.0f})
+            ->setAutoScale(true)
+            ->setGrowCrossAxis(true)
+            ->ignoreInvisibleChildren(false)
+            ->setAutoGrowAxis(0.0f);
 
-        float x = 0.f;
-        float maxHeight = 0.f;
-        int count = 0;
+        content->setLayout(layout);
 
         CCArrayExt<CCNode*> childrenExt(extendedLayer->getChildren());
         std::vector<CCNode*> pages(childrenExt.begin(), childrenExt.end());
@@ -68,23 +75,11 @@ class $modify(MyShopLayer, GJShopLayer) {
         for (auto page : pages) {
             if (!page) continue;
 
-            Ref<CCNode> pageRef = page;
-
             page->removeFromParent();
-
-            page->setAnchorPoint({0.f, 0.f});
-            page->setPosition({x, 0.f});
-
             content->addChild(page);
-
-            x += page->getContentWidth();
-            maxHeight = std::max(maxHeight, page->getContentHeight());
-
-            count++;
         }
-
-        content->setContentSize({x, maxHeight});
-        scroll->setInnerContentSize({x, maxHeight});
+        content->updateLayout();
+        scroll->setInnerContentSize(content->getContentSize());
 
         boomScrollLayer->setVisible(false);
         boomScrollLayer->setTouchEnabled(false);
