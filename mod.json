@@ -14,8 +14,29 @@
 	"resources": {
 		"sprites": ["resources/*.png"]
 	},
+	"tags": ["enhancement", "interface", "offline"],
 	"dependencies": {
 		"geode.node-ids": {"version": ">=v1.23.3","required": true},
 		"alphalaneous.alphas-ui-pack": {"version": ">=1.1.1","required": true}
+	},
+	"settings": {
+		"CleanEditorPause": {
+			"type": "bool",
+			"name": "Enables Clean Editor Pause as long tinker is disabled",
+			"description": "",
+			"default": true
+		},
+		"OptionsLayer": {
+			"type": "bool",
+			"name": "Enables OptionsLayer Enhancements [BUGGY]",
+			"description": "Enhancements for the main menu music sliders",
+			"default": true
+		},
+		"GJShopLayer": {
+			"type": "bool",
+			"name": "Enables enhancements for the shops",
+			"description": "",
+			"default": true
+		}
 	}
 }

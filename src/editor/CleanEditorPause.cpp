@@ -1,9 +1,11 @@
 #include <Geode/Geode.hpp>
 #include <Geode/binding/ColorActionSprite.hpp>
+#include <Geode/binding/FLAlertLayer.hpp>
 #include <Geode/modify/EditorPauseLayer.hpp>
 #include <Geode/ui/SliderNode.hpp>
 #include "../thing.hpp"
 #include "../helper/UIScaling.hpp"
+// #include "Geode/loader/SettingV3.hpp"
 #include "Geode/ui/BasedButtonSprite.hpp"
 
 // stolen from gh:Alphalaneous/Tinker
@@ -16,7 +18,22 @@ class $modify(MyEditorPauseLayer, EditorPauseLayer) {
         if (!EditorPauseLayer::init(editor))
             return false;
 
-        CleanPause::onPause(this);
+        //listenForSettingChanges<bool>("CleanEditorPause", [this](bool enabled) {
+        auto enabled = Mod::get()->getSettingValue<bool>("CleanEditorPause");
+        if (enabled) {
+            if (thing::IsTinkerInstalled()) {
+                FLAlertLayer::create(
+                    "UI Enhancements",
+                    "Clean Editor Pause in UI Enhancements will not work correctly if Tinker is installed\nThis will not matter in 2.209 before tinker gets transferred over to another person",
+                    "OK"
+                )->show();
+            } else {
+                CleanPause::onPause(this);
+            }
+        } else {
+            log::info("disabled");
+        }
+        //});
 
         return true;
     }
