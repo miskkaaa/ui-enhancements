@@ -133,10 +133,13 @@ class $modify(MyOptionsLayer, OptionsLayer) {
             auto musicToggleLabelNode = targetLayer->getChildByID("menu-music-label");
 
             if (musicToggle) {
-                musicToggle->setScale(0.75f);            
-                float bottomMargin = 95.5f * 4;
-                float leftMargin = 90.5f + UIScaling::getSafeOffset().x;
+                musicToggle->setScale(0.75f);  
+                auto winSize = CCDirector::get()->getWinSize();  
 
+                float bottomMargin = 95.5f * 4;
+                // float leftMargin = 120.f + UIScaling::getSafeOffset().x;
+                // float bottomMargin = (winSize.height / 2.f);
+                float leftMargin = (winSize.width / 2.f) / 2.3f;
                 CCPoint toggleWorldPos = {leftMargin, bottomMargin};
 
                 if (auto parent = musicToggle->getParent()) {
