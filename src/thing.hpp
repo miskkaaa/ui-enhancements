@@ -28,4 +28,13 @@ namespace thing {
             return false;
         }
     }
+
+    inline bool IsTinkerSettingEnabled(std::string setting) {
+        auto mod = Loader::get()->getInstalledMod("alphalaneous.tinker");
+        if (mod->getSettingValue<bool>(setting)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -10,6 +10,14 @@
 
 // stolen from gh:Alphalaneous/Tinker
 // got permission i think https://discord.com/channels/911701438269386882/911702535373475870/1532654810317324358
+// ^^^
+// outdated, actually got permission from alphalaneous
+/*
+miskaa [gode],  — 14:32
+sorry for dming you, but can i use CleanEditorPause from tinker for my own ui-enhancements geode mod? (like actually release it)
+Alphalaneous — 14:32
+Sure, but check if tinker is enabled for the editor one
+*/
 
 using namespace geode::prelude;
 
@@ -21,10 +29,10 @@ class $modify(MyEditorPauseLayer, EditorPauseLayer) {
         //listenForSettingChanges<bool>("CleanEditorPause", [this](bool enabled) {
         auto enabled = Mod::get()->getSettingValue<bool>("CleanEditorPause");
         if (enabled) {
-            if (thing::IsTinkerInstalled()) {
+            if (thing::IsTinkerSettingEnabled("CleanPause-enabled")) {
                 FLAlertLayer::create(
                     "UI Enhancements",
-                    "Clean Editor Pause in UI Enhancements will not work correctly if Tinker is installed\nThis will not matter in 2.209 before tinker gets transferred over to another person",
+                    "Clean Editor Pause in UI Enhancements will not work correctly if Clean Pause is enabled on tinker\n\nEither disable UI Enhancement's Clean Editor Pause or Tinker's Clean Pause, though there still may be issues",
                     "OK"
                 )->show();
             } else {
