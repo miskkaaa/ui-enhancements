@@ -45,14 +45,31 @@ class $modify(MyShopLayer, GJShopLayer) {
                 dots->setVisible(false);
             }
 
-            CCSize viewportSize = boomScrollLayer->getContentSize();
-            if (viewportSize.width <= 0.f || viewportSize.height <= 0.f) {
-                viewportSize = CCDirector::sharedDirector()->getWinSize();
-            }
+            auto winSize = CCDirector::sharedDirector()->getWinSize();
+
+            //CCSize viewportSize = boomScrollLayer->getContentSize();
+            //if (viewportSize.width <= 0.f || viewportSize.height <= 0.f) {
+                //viewportSize = winSize;
+            //}
+
+            // works on my machine!
+            constexpr float REF_W = 568.f;
+            constexpr float REF_H = 320.f;
+
+            float sx = winSize.width  / REF_W;
+            float sy = winSize.height / REF_H;
+
+            CCSize viewportSize = {
+                405.f * sx,
+                268.f * sy
+            };
 
             auto scroll = AdvancedScrollLayer::create(viewportSize);
             scroll->setAnchorPoint({0.f, 0.f});
-            scroll->setPosition(boomScrollLayer->getPosition());
+            scroll->setPosition({
+                83.f * sx,
+                -99.f * sy
+            });
 
             scroll->setHorizontalScroll(true);
             scroll->setVerticalScroll(false);
@@ -66,7 +83,7 @@ class $modify(MyShopLayer, GJShopLayer) {
                 ->setCrossAxisAlignment(AxisAlignment::Between)
                 ->setCrossAxisLineAlignment(AxisAlignment::Even)
                 ->setGap(-230.0f) // was -175.0f
-                ->setPadding({-37.0f, 0.0f, -375.0f, -7.0f})
+                ->setPadding({-113.0f, -151.0f, -434.0f, -114.0f})
                 ->setAutoScale(true)
                 ->setGrowCrossAxis(true)
                 ->ignoreInvisibleChildren(false)
