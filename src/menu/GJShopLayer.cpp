@@ -82,7 +82,8 @@ class $modify(MyShopLayer, GJShopLayer) {
                 ->setAxisAlignment(AxisAlignment::Start)
                 ->setCrossAxisAlignment(AxisAlignment::Between)
                 ->setCrossAxisLineAlignment(AxisAlignment::Even)
-                ->setGap(-230.0f) // was -175.0f
+                // ->setGap(-230.0f) // was -175.0f
+                ->setGap(-(winSize.width / 2.5f))
                 ->setPadding({-113.0f, -151.0f, -434.0f, -114.0f})
                 ->setAutoScale(true)
                 ->setGrowCrossAxis(true)
