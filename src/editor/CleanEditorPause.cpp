@@ -30,11 +30,7 @@ class $modify(MyEditorPauseLayer, EditorPauseLayer) {
         auto enabled = Mod::get()->getSettingValue<bool>("CleanEditorPause");
         if (enabled) {
             if (thing::IsTinkerSettingEnabled("CleanPause-enabled")) {
-                FLAlertLayer::create(
-                    "UI Enhancements",
-                    "Clean Editor Pause in UI Enhancements will not work correctly if Clean Pause is enabled on tinker\n\nEither disable UI Enhancement's Clean Editor Pause or Tinker's Clean Pause, though there still may be issues",
-                    "OK"
-                )->show();
+                return true;
             } else {
                 CleanPause::onPause(this);
             }
