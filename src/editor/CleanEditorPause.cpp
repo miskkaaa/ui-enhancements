@@ -123,12 +123,16 @@ void CleanPause::onPause(EditorPauseLayer* pauseLayer) {
 
     musicLabelContainer->updateLayout();
 
-    auto musicSlider = SliderNode::create([fmod] (SliderNode* sender, float value) {
-        fmod->m_musicVolume = value / 100.f;
+    auto musicSlider = SliderNode::create([fmod](SliderNode* sender, float value) {
+        value = std::clamp(value, 0.f, 100.f);
+        float volume = value / 100.f;
+
+        fmod->m_musicVolume = volume;
         if (fmod->m_backgroundMusicChannel) {
-            fmod->m_backgroundMusicChannel->setVolume(value / 100.f);
+            fmod->m_backgroundMusicChannel->setVolume(volume);
         }
     });
+    musicSlider->setMax(100.f);
     musicSlider->setID("music-slider"_spr);
     musicSlider->linkTextInput(musicInput, 0);
     musicSlider->setValue(fmod->m_musicVolume * 100.f);
@@ -158,13 +162,16 @@ void CleanPause::onPause(EditorPauseLayer* pauseLayer) {
 
     sfxLabelContainer->updateLayout();
 
-    auto sfxSlider = SliderNode::create([fmod] (SliderNode* sender, float value) {
-        fmod->m_sfxVolume = value / 100.f;
+    auto sfxSlider = SliderNode::create([fmod](SliderNode* sender, float value) {
+        value = std::clamp(value, 0.f, 100.f);
+        float volume = value / 100.f;
+
+        fmod->m_sfxVolume = volume;
         if (fmod->m_globalChannel) {
-            fmod->m_globalChannel->setVolume(value / 100.f);
+            fmod->m_globalChannel->setVolume(volume);
         }
     });
-
+    sfxSlider->setMax(100.f);
     sfxSlider->setID("sfx-slider"_spr);
     sfxSlider->linkTextInput(sfxInput, 0);
     sfxSlider->setValue(fmod->m_sfxVolume * 100.f);

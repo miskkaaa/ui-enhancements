@@ -56,6 +56,7 @@ class $modify(MyOptionsLayer, OptionsLayer) {
                     fmod->m_backgroundMusicChannel->setVolume(volume);
                 }
             });
+            musicSlider->setMax(100.f);
             musicSlider->setID("music-slider"_spr);
             musicSlider->linkTextInput(musicInput, 0);
             musicSlider->setValue(fmod->m_musicVolume * 100.f);
@@ -94,6 +95,7 @@ class $modify(MyOptionsLayer, OptionsLayer) {
                     fmod->m_globalChannel->setVolume(volume);
                 }
             });
+            sfxSlider->setMax(100.f);
             sfxSlider->setID("sfx-slider"_spr);
             sfxSlider->linkTextInput(sfxInput, 0);
             sfxSlider->setValue(fmod->m_sfxVolume * 100.f);
