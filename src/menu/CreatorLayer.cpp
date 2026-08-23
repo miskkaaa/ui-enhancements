@@ -1,8 +1,11 @@
 #include <Geode/Geode.hpp>
+#include <Geode/binding/FLAlertLayer.hpp>
 #include <Geode/modify/CreatorLayer.hpp>
 #include <CreatorLayer.hpp>
 
 #include "../thing.hpp"
+#include "Geode/cocos/sprite_nodes/CCSpriteFrameCache.h"
+#include "Geode/ui/Label.hpp"
 
 using namespace geode::prelude;
 
@@ -11,20 +14,43 @@ class $modify(CreatorLayer) {
         if (!CreatorLayer::init()) return false;
 
         if (thing::IsOptionEnabled("ILoveMapPacks")) {
-            UICreatorLayer::DoTheFunni(this);
+            //UICreatorLayer::DoTheFunni(this);
         }
 
+        if (thing::IsOptionEnabled("CreatorLayer")) {
+            UICreatorLayer::CreateTheThingies(this);
+        }
         return true;
     }
 
     void onWeeklyLevel(CCObject* sender) {
         if (thing::IsOptionEnabled("ILoveMapPacks")) {
             onMapPacks(sender);
+        } else if (thing::IsOptionEnabled("CreatorLayer")) {
+            onOnlineLevels(sender);
         } else {
             CreatorLayer::onWeeklyLevel(sender);
         }
     }
+
+    void onDailyLevel(CCObject* sender) {
+        if (thing::IsOptionEnabled("CreatorLayer")) {
+            onSavedLevels(sender);
+        } else {
+            CreatorLayer::onDailyLevel(sender);
+        }
+    }
+
+    void onEventLevel(CCObject* sender) {
+        if (thing::IsOptionEnabled("CreatorLayer")) {
+            onMyLevels(sender);
+        } else {
+            CreatorLayer::onEventLevel(sender);
+        }
+    }
 };
+
+/*
 
 void UICreatorLayer::DoTheFunni(CreatorLayer* something) {
     if (!something) return;
@@ -61,4 +87,90 @@ void UICreatorLayer::DoTheFunni(CreatorLayer* something) {
             break;
         }
     }
+}
+
+*/
+
+void UICreatorLayer::CreateTheThingies(CreatorLayer* something) {
+    if (!something) return;
+
+    auto winSize = CCDirector::get()->getWinSize();
+    auto menu = something->getChildByID("creator-buttons-menu");
+    if (!menu) return;
+    auto weekly = menu->getChildByID("weekly-button");
+    auto daily = menu->getChildByID("daily-button");
+    auto event = menu->getChildByID("event-button");
+
+    for (auto child : menu->getChildrenExt()) {
+        if (child->getID() != "weekly-button" && child->getID() != "daily-button" && child->getID() != "event-button") {
+            child->setVisible(!!false);
+        }
+    }
+
+    for (auto child : menu->getChildrenExt()) {
+        for (auto bullshit1 : weekly->getChildrenExt()) {
+            auto sprite  = typeinfo_cast<CCSprite*>(bullshit1);
+            if (sprite) {
+                auto frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("GJ_searchBtn_001.png"); // "GJ_searchBtn_001.png"
+
+                if (frame) {
+                    sprite->setDisplayFrame(frame);
+                }
+
+                break;
+            }
+        }
+
+        for (auto bullshit2 : daily->getChildrenExt()) {
+            auto sprite = typeinfo_cast<CCSprite*>(bullshit2);
+            if (sprite) {
+                auto frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("GJ_savedBtn_001.png");
+
+                if (frame) {
+                    sprite->setDisplayFrame(frame);
+                }
+
+                break;
+            }
+        }
+
+        for (auto bullshit3 : event->getChildrenExt()) {
+            auto sprite = typeinfo_cast<CCSprite*>(bullshit3);
+            if (sprite) {
+                auto frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("GJ_createBtn_001.png");
+
+                if (frame) {
+                    sprite->setDisplayFrame(frame);
+                }
+
+                break;
+            }
+        }
+    }
+
+    auto layerBG = CCLayerColor::create({0, 0, 0, 0});
+    layerBG->setContentSize(winSize / something->getScale() / 1.5f);
+    layerBG->setAnchorPoint({0.5f, 0.5f});
+    layerBG->setZOrder(-1);
+    layerBG->ignoreAnchorPointForPosition(false);
+    layerBG->setPosition(winSize / 2.f);
+    layerBG->setID("background"_spr);
+
+    auto bg = NineSlice::create("square04_001.png");
+    bg->setColor({0, 0, 0});
+    bg->setOpacity(175);
+    bg->setScaleMultiplier(0.8f);
+    bg->setID("background-sprite"_spr);
+
+    bg->setContentSize(layerBG->getContentSize());
+    bg->setPosition(layerBG->getContentSize() / 2.f);
+
+    auto text = Label::createRich("<cg>gay Sex</c>",thing::font::chat);
+    text->setAnchorPoint({0.5f,0.5f});
+    text->setPosition({bg->getScaledContentWidth() / 2.f, bg->getScaledContentHeight() / 1.25f});
+
+    layerBG->addChild(bg);
+    something->addChild(layerBG);
+    something->updateLayout();
+    bg->addChild(text);
 }

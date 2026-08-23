@@ -37,6 +37,11 @@
 			"name": "Enables enhancements for the shops",
 			"default": true
 		},
+		"CreatorLayer": {
+			"type":	"bool",
+			"name": "The fucking idk",
+			"default": true
+		},
 
 		"jokesettings": {
 			"type": "title",

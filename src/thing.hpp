@@ -28,6 +28,14 @@ namespace thing {
         }
     };
 
+    inline bool IsFuckingModInstalled(std::string bullshit) {
+        if (auto mod = Loader::get()->getInstalledMod(bullshit)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     inline bool IsTinkerInstalled() {
         if (auto mod = Loader::get()->getInstalledMod("alphalaneous.tinker")) {
             return true;
@@ -44,4 +52,10 @@ namespace thing {
             return false;
         }
     }
+
+    namespace font {
+        inline constexpr auto big = "bigFont.fnt";
+        inline constexpr auto gold = "goldFont.fnt";
+        inline constexpr auto chat = "chatFont.fnt";
+    };
 }
