@@ -13,6 +13,13 @@ public: //i have to add public here
 };
 
 namespace thing {
+    inline bool IsOptionEnabled(std::string setting) {
+        if (auto mod = Mod::get()->getSettingValue<bool>(setting)) {
+            return true;
+        } else {
+            return false;
+        }
+    };
     inline bool IsCustomKeybindsInstalled() {
         if (auto mod = Loader::get()->getInstalledMod("geode.custom-keybinds")) {
             return true;

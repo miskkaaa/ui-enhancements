@@ -29,8 +29,12 @@ class $modify(MyEditorPauseLayer, EditorPauseLayer) {
         //listenForSettingChanges<bool>("CleanEditorPause", [this](bool enabled) {
         auto enabled = Mod::get()->getSettingValue<bool>("CleanEditorPause");
         if (enabled) {
-            if (thing::IsTinkerSettingEnabled("CleanPause-enabled")) {
-                return true;
+            if (thing::IsTinkerInstalled()) {
+                if (thing::IsTinkerSettingEnabled("CleanPause-enabled")) {
+                    return true;
+                } else {
+                    CleanPause::onPause(this);
+                }
             } else {
                 CleanPause::onPause(this);
             }
