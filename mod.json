@@ -42,6 +42,11 @@
 			"name": "The fucking idk",
 			"default": true
 		},
+		"PauseLayer": {
+			"type": "bool",
+			"name": "Pause menu",
+			"default": true
+		},
 
 		"jokesettings": {
 			"type": "title",

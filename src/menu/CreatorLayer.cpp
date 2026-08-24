@@ -14,7 +14,9 @@ class $modify(CreatorLayer) {
         if (!CreatorLayer::init()) return false;
 
         if (thing::IsOptionEnabled("ILoveMapPacks")) {
-            //UICreatorLayer::DoTheFunni(this);
+            if (!thing::IsOptionEnabled("CreatorLayer")) {
+                UICreatorLayer::DoTheFunni(this);
+            }
         }
 
         if (thing::IsOptionEnabled("CreatorLayer")) {
@@ -49,8 +51,6 @@ class $modify(CreatorLayer) {
         }
     }
 };
-
-/*
 
 void UICreatorLayer::DoTheFunni(CreatorLayer* something) {
     if (!something) return;
@@ -89,7 +89,20 @@ void UICreatorLayer::DoTheFunni(CreatorLayer* something) {
     }
 }
 
-*/
+void bitchSprite(CCNode* btn, const char* fm) {
+    if (!btn) return;
+
+    for (auto child : btn->getChildrenExt()) {
+        auto sprite = typeinfo_cast<CCSprite*>(child);
+        if (!sprite) continue;
+
+        if (auto frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(fm)) {
+            sprite->setDisplayFrame(frame);
+        }
+
+        break;
+    }
+}
 
 void UICreatorLayer::CreateTheThingies(CreatorLayer* something) {
     if (!something) return;
@@ -107,46 +120,9 @@ void UICreatorLayer::CreateTheThingies(CreatorLayer* something) {
         }
     }
 
-    for (auto child : menu->getChildrenExt()) {
-        for (auto bullshit1 : weekly->getChildrenExt()) {
-            auto sprite  = typeinfo_cast<CCSprite*>(bullshit1);
-            if (sprite) {
-                auto frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("GJ_searchBtn_001.png"); // "GJ_searchBtn_001.png"
-
-                if (frame) {
-                    sprite->setDisplayFrame(frame);
-                }
-
-                break;
-            }
-        }
-
-        for (auto bullshit2 : daily->getChildrenExt()) {
-            auto sprite = typeinfo_cast<CCSprite*>(bullshit2);
-            if (sprite) {
-                auto frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("GJ_savedBtn_001.png");
-
-                if (frame) {
-                    sprite->setDisplayFrame(frame);
-                }
-
-                break;
-            }
-        }
-
-        for (auto bullshit3 : event->getChildrenExt()) {
-            auto sprite = typeinfo_cast<CCSprite*>(bullshit3);
-            if (sprite) {
-                auto frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("GJ_createBtn_001.png");
-
-                if (frame) {
-                    sprite->setDisplayFrame(frame);
-                }
-
-                break;
-            }
-        }
-    }
+    bitchSprite(weekly, "GJ_searchBtn_001.png");
+    bitchSprite(daily,  "GJ_savedBtn_001.png");
+    bitchSprite(event,  "GJ_createBtn_001.png");
 
     auto layerBG = CCLayerColor::create({0, 0, 0, 0});
     layerBG->setContentSize(winSize / something->getScale() / 1.5f);
@@ -156,7 +132,7 @@ void UICreatorLayer::CreateTheThingies(CreatorLayer* something) {
     layerBG->setPosition(winSize / 2.f);
     layerBG->setID("background"_spr);
 
-    auto bg = NineSlice::create("square04_001.png");
+    auto bg = NineSlice::create("square02b_001.png");
     bg->setColor({0, 0, 0});
     bg->setOpacity(175);
     bg->setScaleMultiplier(0.8f);
@@ -165,7 +141,7 @@ void UICreatorLayer::CreateTheThingies(CreatorLayer* something) {
     bg->setContentSize(layerBG->getContentSize());
     bg->setPosition(layerBG->getContentSize() / 2.f);
 
-    auto text = Label::createRich("<cg>gay Sex</c>",thing::font::chat);
+    auto text = Label::createRich("<cg>hi</c>",thing::font::chat);
     text->setAnchorPoint({0.5f,0.5f});
     text->setPosition({bg->getScaledContentWidth() / 2.f, bg->getScaledContentHeight() / 1.25f});
 
