@@ -21,7 +21,7 @@ class $modify(PauseLayer) {
     }
     
     static void onModify(auto& self) {
-        if (!self.setHookPriority("PauseLayer::onPause", Priority::Last)) {
+        if (!self.setHookPriority("PauseLayer::onPause", Priority::Late)) {
             geode::log::warn("Failed to set hook priority.");
         }
     }
@@ -48,17 +48,40 @@ void UIPauseLayer::onPause(PauseLayer *pause) {
     if (!centermenu) return;
     // auto levelname = layer->getChildByID("level-name");
     // if (!levelname) return;
+
+    auto plSizeX = layer->getContentSize().width;
+
     auto leftbuttonmenu = layer->getChildByID("left-button-menu");
     if (!leftbuttonmenu) return;
+    leftbuttonmenu->setAnchorPoint({0.5f, 0.5f});
+    leftbuttonmenu->setPosition({40.f, 160.f});
+    leftbuttonmenu->setLayout(
+        ColumnLayout::create()
+            ->setAutoScale(true)
+            ->setGap(5.f)
+            ->setAxisAlignment(AxisAlignment::End)
+            ->setCrossAxisAlignment(AxisAlignment::Center)
+            ->setCrossAxisLineAlignment(AxisAlignment::Center)
+            ->setCrossAxisOverflow(true));
+
     auto rightbuttonmenu = layer->getChildByID("right-button-menu");
     if (!rightbuttonmenu) return;
+    rightbuttonmenu->setAnchorPoint({0.5f, 0.5f});
+    rightbuttonmenu->setPosition({plSizeX - 40.f, 160.f});
+    rightbuttonmenu->setLayout(
+        ColumnLayout::create()
+            ->setAutoScale(true)
+            ->setGap(5.f)
+            ->setAxisAlignment(AxisAlignment::End)
+            ->setCrossAxisAlignment(AxisAlignment::Center)
+            ->setCrossAxisLineAlignment(AxisAlignment::Center)
+            ->setCrossAxisOverflow(true));
+
     auto bottombuttonmenu = layer->getChildByID("bottom-button-menu");
     if (!bottombuttonmenu) return;
 
     centermenu->setScale(0.750f);
-    centermenu->setPosition({centermenu->getPositionX(), centermenu->getPositionY() + 5.f});
-    // ik i could have used setPositionY instead of this but its already too late
-    // unless it somehow fucking breaks
+    centermenu->setPositionY(centermenu->getPositionY() + 5.f); // centermenu->setPosition({centermenu->getPositionX(), centermenu->getPositionY() + 5.f});
 
     auto nineslicemenu = NineSlice::create("square04_001.png");
     auto bitchsize = centermenu->getContentSize();
@@ -94,6 +117,7 @@ void UIPauseLayer::onPause(PauseLayer *pause) {
     // YOU ARE KANYE WEST
     // CLOSE THE APP STORE
 
+    // NC left
     auto ninesliceLeft = NineSlice::create(thing::bitch::roundest);
     auto leftSize = leftbuttonmenu->getScaledContentSize();
     ninesliceLeft->setColor({0,0,0});
@@ -107,6 +131,7 @@ void UIPauseLayer::onPause(PauseLayer *pause) {
         leftSize.height + 10.f
     });
 
+    // NC right
     ninesliceLeft->setPosition(leftbuttonmenu->getPosition());
     ninesliceLeft->setAnchorPoint({0.5f,0.5f});
 
@@ -125,6 +150,7 @@ void UIPauseLayer::onPause(PauseLayer *pause) {
 
     ninesliceRight->setPosition(rightbuttonmenu->getPosition());
 
+    // NC bottom
     auto ninesliceBottom = NineSlice::create(thing::bitch::roundest);
     auto bottomShit = bottombuttonmenu->getScaledContentSize();
     ninesliceBottom->setColor({0,0,0});
@@ -252,15 +278,9 @@ void UIPauseLayer::onPause(PauseLayer *pause) {
     layer->addChild(sfxSlider);
     layer->addChild(sfxLabelContainer);
 
+    layer->addChild(ninesliceLeft);
+    layer->addChild(ninesliceRight);
     layer->addChild(ninesliceBottom);
-    
-    if (!thing::IsFuckingModInstalled("weebify.coins_in_pause_menu")) {
-        layer->addChild(ninesliceLeft);
-        layer->addChild(ninesliceRight);
-    } else {
-        FLAlertLayer::create("UI Enhancements", "The mod \"Coins in pause menu\" causes some bullshit to happen, so i've disabled the left and right background thingies", "OK")->show();
-        return;
-    }
 
     layer->updateLayout();
 }
