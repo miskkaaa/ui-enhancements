@@ -1,6 +1,7 @@
 #include "Geode/ui/SimpleAxisLayout.hpp"
 #include "Geode/ui/TextInput.hpp"
 #include <Geode/Geode.hpp>
+#include <Geode/binding/FLAlertLayer.hpp>
 using namespace geode::prelude;
 
 #include <Geode/modify/PauseLayer.hpp>
@@ -18,6 +19,12 @@ class $modify(PauseLayer) {
 
         UIPauseLayer::onPause(this);
     }
+    
+    static void onModify(auto& self) {
+        if (!self.setHookPriority("PauseLayer::onPause", Priority::Last)) {
+            geode::log::warn("Failed to set hook priority.");
+        }
+    }
 };
 
 void UIPauseLayer::onPause(PauseLayer *pause) {
@@ -29,10 +36,110 @@ void UIPauseLayer::onPause(PauseLayer *pause) {
     auto oldMusicLabel = layer->getChildByID("music-label");
     auto oldSfxLabel = layer->getChildByID("sfx-label");
 
+    auto bg = layer->getChildByID("background");
+
     if (oldMusicSlider) oldMusicSlider->setVisible(false);
     if (oldSfxSlider) oldSfxSlider->setVisible(false);
     if (oldMusicLabel) oldMusicLabel->setVisible(false);
     if (oldSfxLabel) oldSfxLabel->setVisible(false);
+    if (bg) bg->setVisible(false);
+
+    auto centermenu = layer->getChildByID("center-button-menu");
+    if (!centermenu) return;
+    // auto levelname = layer->getChildByID("level-name");
+    // if (!levelname) return;
+    auto leftbuttonmenu = layer->getChildByID("left-button-menu");
+    if (!leftbuttonmenu) return;
+    auto rightbuttonmenu = layer->getChildByID("right-button-menu");
+    if (!rightbuttonmenu) return;
+    auto bottombuttonmenu = layer->getChildByID("bottom-button-menu");
+    if (!bottombuttonmenu) return;
+
+    centermenu->setScale(0.750f);
+    centermenu->setPosition({centermenu->getPositionX(), centermenu->getPositionY() + 5.f});
+    // ik i could have used setPositionY instead of this but its already too late
+    // unless it somehow fucking breaks
+
+    auto nineslicemenu = NineSlice::create("square04_001.png");
+    auto bitchsize = centermenu->getContentSize();
+    nineslicemenu->setColor({0, 0, 0});
+    nineslicemenu->setOpacity(175);
+    nineslicemenu->setScaleMultiplier(0.8f);
+    nineslicemenu->setID("centermenu-nineslice-sprite"_spr);
+    nineslicemenu->setZOrder(-1);
+    
+    nineslicemenu->setContentSize({
+        bitchsize.width + 10.f,
+        bitchsize.height + 10.f
+    });
+
+    nineslicemenu->setPosition(bitchsize / 2.f);
+    centermenu->addChild(nineslicemenu);
+
+    /*
+    auto nineslicelevel = NineSlice::create("square04_001.png");
+    auto leveltextsize = levelname->getContentSize();
+    nineslicelevel->setColor({0,0,0});
+    nineslicelevel->setOpacity(175);
+    nineslicelevel->setScaleMultiplier(0.8f);
+    nineslicelevel->setID("level-nineslice-sprite"_spr);
+    nineslicelevel->setZOrder(-1);
+
+    nineslicelevel->setPosition(leveltextsize / 2.f);
+    levelname->addChild(nineslicelevel);
+    */
+
+    // DO NOT DOWNLOAD TWITTER
+    // ITS NOT THE APP FOR YOU
+    // YOU ARE KANYE WEST
+    // CLOSE THE APP STORE
+
+    auto ninesliceLeft = NineSlice::create(thing::bitch::roundest);
+    auto leftSize = leftbuttonmenu->getScaledContentSize();
+    ninesliceLeft->setColor({0,0,0});
+    ninesliceLeft->setOpacity(175);
+    ninesliceLeft->setScaleMultiplier(0.7f);
+    ninesliceLeft->setID("left-nineslice-sprite"_spr);
+    ninesliceLeft->setZOrder(-1);
+
+    ninesliceLeft->setContentSize({
+        leftSize.width + 10.f,
+        leftSize.height + 10.f
+    });
+
+    ninesliceLeft->setPosition(leftbuttonmenu->getPosition());
+    ninesliceLeft->setAnchorPoint({0.5f,0.5f});
+
+    auto ninesliceRight = NineSlice::create(thing::bitch::roundest);
+    auto rightSize = rightbuttonmenu->getScaledContentSize();
+    ninesliceRight->setColor({0,0,0});
+    ninesliceRight->setOpacity(175);
+    ninesliceRight->setScaleMultiplier(0.7f);
+    ninesliceRight->setID("right-nineslice-sprite"_spr);
+    ninesliceRight->setZOrder(-1);
+
+    ninesliceRight->setContentSize({
+        rightSize.width + 10.f,
+        rightSize.height + 10.f
+    });
+
+    ninesliceRight->setPosition(rightbuttonmenu->getPosition());
+
+    auto ninesliceBottom = NineSlice::create(thing::bitch::roundest);
+    auto bottomShit = bottombuttonmenu->getScaledContentSize();
+    ninesliceBottom->setColor({0,0,0});
+    ninesliceBottom->setOpacity(175);
+    ninesliceBottom->setScaleMultiplier(0.7f);
+    ninesliceBottom->setID("bottom-nineslice-sprite"_spr);
+    ninesliceBottom->setZOrder(-1);
+
+    ninesliceBottom->setContentSize({
+        bottomShit.width + 10.f,
+        bottomShit.height + 10.f
+    });
+
+    ninesliceBottom->setPosition(bottombuttonmenu->getPosition());
+    ninesliceBottom->setAnchorPoint({0.5f,0.5f});
 
     auto musicLabelContainer = CCNode::create();
     musicLabelContainer->setAnchorPoint({0.5f, 0.5f});
@@ -56,7 +163,8 @@ void UIPauseLayer::onPause(PauseLayer *pause) {
 
     musicLabelContainer->updateLayout();
     musicLabel->setPositionX(musicLabel->getPositionX() + 10.f);
-    musicInput->setPositionY(musicInput->getPositionY() - 3.25f);
+    musicLabel->setPositionY(musicLabel->getPositionY() - 5.f);
+    musicInput->setPositionY(musicInput->getPositionY() - 7.5f);
     musicInput->setPositionX(musicInput->getPositionX() + 15.f);
 
     auto musicSlider = SliderNode::create(
@@ -99,7 +207,8 @@ void UIPauseLayer::onPause(PauseLayer *pause) {
 
     sfxLabelContainer->updateLayout();
     sfxLabel->setPositionX(sfxLabel->getPositionX() + 10.f);
-    sfxInput->setPositionY(sfxInput->getPositionY() - 3.25f);
+    sfxLabel->setPositionY(sfxLabel->getPositionY() - 5.f);
+    sfxInput->setPositionY(sfxInput->getPositionY() - 7.5f);
     sfxInput->setPositionX(sfxInput->getPositionX() + 15.f);
 
     auto sfxSlider = SliderNode::create([fmod](SliderNode* sender, float value) {
@@ -142,6 +251,16 @@ void UIPauseLayer::onPause(PauseLayer *pause) {
     layer->addChild(musicLabelContainer);
     layer->addChild(sfxSlider);
     layer->addChild(sfxLabelContainer);
+
+    layer->addChild(ninesliceBottom);
+    
+    if (!thing::IsFuckingModInstalled("weebify.coins_in_pause_menu")) {
+        layer->addChild(ninesliceLeft);
+        layer->addChild(ninesliceRight);
+    } else {
+        FLAlertLayer::create("UI Enhancements", "The mod \"Coins in pause menu\" causes some bullshit to happen, so i've disabled the left and right background thingies", "OK")->show();
+        return;
+    }
 
     layer->updateLayout();
 }

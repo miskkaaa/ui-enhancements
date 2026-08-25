@@ -58,4 +58,8 @@ namespace thing {
         inline constexpr auto gold = "goldFont.fnt";
         inline constexpr auto chat = "chatFont.fnt";
     };
+    namespace bitch {
+        inline constexpr auto roundest = "square04_001.png";
+        inline constexpr auto round = "square02b_001.png";
+    }
 }

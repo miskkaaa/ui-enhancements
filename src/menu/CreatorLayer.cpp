@@ -141,7 +141,7 @@ void UICreatorLayer::CreateTheThingies(CreatorLayer* something) {
     bg->setContentSize(layerBG->getContentSize());
     bg->setPosition(layerBG->getContentSize() / 2.f);
 
-    auto text = Label::createRich("<cg>hi</c>",thing::font::chat);
+    auto text = Label::createRich("<cg>sesbian lex</c>",thing::font::chat);
     text->setAnchorPoint({0.5f,0.5f});
     text->setPosition({bg->getScaledContentWidth() / 2.f, bg->getScaledContentHeight() / 1.25f});
 
