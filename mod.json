@@ -17,7 +17,8 @@
 	"tags": ["enhancement", "interface", "offline"],
 	"dependencies": {
 		"geode.node-ids": {"version": ">=v1.23.3","required": true},
-		"alphalaneous.alphas-ui-pack": {"version": ">=1.1.1","required": true}
+		"alphalaneous.alphas-ui-pack": {"version": ">=1.1.1","required": true},
+		"thesillydoggo.blur-api": {"version": ">=1.0.0","required": true}
 	},
 	"settings": {
 		"CleanEditorPause": {
@@ -40,12 +41,23 @@
 		"CreatorLayer": {
 			"type":	"bool",
 			"name": "The fucking idk",
-			"default": true
+			"default": false
 		},
 		"PauseLayer": {
 			"type": "bool",
 			"name": "Pause menu",
 			"default": true
+		},
+
+		"specific": {
+			"type": "title",
+			"name": "Specific Settings"
+		},
+
+		"bottombar": {
+			"type": "bool",
+			"name": "Bottom bar in Pause menu",
+			"default": false
 		},
 
 		"jokesettings": {
@@ -57,7 +69,7 @@
 		"ILoveMapPacks": {
 			"type": "bool",
 			"name": "Only button for CreatorLayer are MapPacks and the Exit Button",
-			"default": false
+			"default": true
 		}
 	}
 }

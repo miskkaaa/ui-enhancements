@@ -1,3 +1,4 @@
+#include "Geode/ui/NineSlice.hpp"
 #include "Geode/ui/SimpleAxisLayout.hpp"
 #include "Geode/ui/TextInput.hpp"
 #include <Geode/Geode.hpp>
@@ -9,6 +10,7 @@ using namespace geode::prelude;
 
 #include "../thing.hpp"
 #include <PauseLayer.hpp>
+#include <Blur.hpp>
 
 class $modify(PauseLayer) {
     void customSetup() {
@@ -29,6 +31,7 @@ class $modify(PauseLayer) {
 
 void UIPauseLayer::onPause(PauseLayer *pause) {
     auto fmod = FMODAudioEngine::get();
+    auto winSize = CCDirector::get()->getWinSize();
     CCNode *layer = pause;
 
     auto oldMusicSlider = layer->getChildByID("music-slider");
@@ -43,6 +46,7 @@ void UIPauseLayer::onPause(PauseLayer *pause) {
     if (oldMusicLabel) oldMusicLabel->setVisible(false);
     if (oldSfxLabel) oldSfxLabel->setVisible(false);
     if (bg) bg->setVisible(false);
+    //BlurAPI::addBlur(bg);
 
     auto centermenu = layer->getChildByID("center-button-menu");
     if (!centermenu) return;
@@ -59,6 +63,7 @@ void UIPauseLayer::onPause(PauseLayer *pause) {
         ColumnLayout::create()
             ->setAutoScale(true)
             ->setGap(5.f)
+            ->setAxisReverse(true)
             ->setAxisAlignment(AxisAlignment::End)
             ->setCrossAxisAlignment(AxisAlignment::Center)
             ->setCrossAxisLineAlignment(AxisAlignment::Center)
@@ -99,6 +104,15 @@ void UIPauseLayer::onPause(PauseLayer *pause) {
     nineslicemenu->setPosition(bitchsize / 2.f);
     centermenu->addChild(nineslicemenu);
 
+    auto background = NineSlice::create(thing::bitch::round);
+    background->setColor({0, 0, 0});
+    background->setOpacity(20);
+    background->setScaleMultiplier(0.8f);
+    background->setID("background"_spr);
+    background->setZOrder(bg->getZOrder() - 5);
+    background->setContentSize({winSize.width, winSize.height});
+    // penis
+    background->setAnchorPoint({0.f,0.f});
     /*
     auto nineslicelevel = NineSlice::create("square04_001.png");
     auto leveltextsize = levelname->getContentSize();
@@ -280,7 +294,13 @@ void UIPauseLayer::onPause(PauseLayer *pause) {
 
     layer->addChild(ninesliceLeft);
     layer->addChild(ninesliceRight);
-    layer->addChild(ninesliceBottom);
+    BlurAPI::addBlur(background);
 
+    if (thing::IsOptionEnabled("bottombar")) {
+        BlurAPI::addBlur(ninesliceBottom);
+        BlurAPI::getOptions(ninesliceBottom)->passes = 2;
+        layer->addChild(ninesliceBottom);
+    }
+    layer->addChild(background);
     layer->updateLayout();
 }
