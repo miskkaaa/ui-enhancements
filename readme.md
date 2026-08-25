@@ -9,3 +9,6 @@ Enhances Geometry Dash UI
 
 # Todo:
 - Fix GJShopLayer
+
+# Special thanks:
+- imes (Helping with PauseLayer)
