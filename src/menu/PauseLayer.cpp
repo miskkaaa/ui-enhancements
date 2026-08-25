@@ -292,13 +292,20 @@ void UIPauseLayer::onPause(PauseLayer *pause) {
     layer->addChild(sfxSlider);
     layer->addChild(sfxLabelContainer);
 
-    layer->addChild(ninesliceLeft);
-    layer->addChild(ninesliceRight);
-    BlurAPI::addBlur(background);
+    if (thing::IsOptionEnabled("thethings")) {
+        layer->addChild(ninesliceLeft);
+        layer->addChild(ninesliceRight);
+    }
+    if (thing::IsOptionEnabled("blur")) {
+        BlurAPI::addBlur(background);
+    }
 
     if (thing::IsOptionEnabled("bottombar")) {
-        BlurAPI::addBlur(ninesliceBottom);
-        BlurAPI::getOptions(ninesliceBottom)->passes = 2;
+        if (!thing::IsOptionEnabled("thethings")) return;
+        if (thing::IsOptionEnabled("blur")) {
+            BlurAPI::addBlur(ninesliceBottom);
+            BlurAPI::getOptions(ninesliceBottom)->passes = 2;
+        }
         layer->addChild(ninesliceBottom);
     }
     layer->addChild(background);
