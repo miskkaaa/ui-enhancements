@@ -12,3 +12,4 @@ Enhances Geometry Dash UI
 
 # Special thanks:
 - imes (Helping with PauseLayer)
+- cheeseworks (helping me with creatorlayer at 1am)
