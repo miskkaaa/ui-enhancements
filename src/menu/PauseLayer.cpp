@@ -85,24 +85,30 @@ void UIPauseLayer::onPause(PauseLayer *pause) {
     auto bottombuttonmenu = layer->getChildByID("bottom-button-menu");
     if (!bottombuttonmenu) return;
 
-    centermenu->setScale(0.750f);
+    auto practicebar = layer->getChildByID("practice-progress-bar");
+    auto pbsize = practicebar->getContentSize();
+
+    // centermenu->setScale(0.750f);
     centermenu->setPositionY(centermenu->getPositionY() + 5.f); // centermenu->setPosition({centermenu->getPositionX(), centermenu->getPositionY() + 5.f});
+    centermenu->setContentSize({pbsize.width, centermenu->getContentSize().height});
+    centermenu->setScale(0.75f);
+    centermenu->updateLayout();
 
     auto nineslicemenu = NineSlice::create("square04_001.png");
     auto bitchsize = centermenu->getContentSize();
     nineslicemenu->setColor({0, 0, 0});
     nineslicemenu->setOpacity(175);
-    nineslicemenu->setScaleMultiplier(0.8f);
+    // nineslicemenu->setScaleMultiplier(0.8f);
     nineslicemenu->setID("centermenu-nineslice-sprite"_spr);
     nineslicemenu->setZOrder(-1);
-    
+    nineslicemenu->setPosition(centermenu->getPositionX(), centermenu->getPositionY());
     nineslicemenu->setContentSize({
-        bitchsize.width + 10.f,
-        bitchsize.height + 10.f
+        bitchsize.width,
+        bitchsize.height * 0.8f
     });
-
-    nineslicemenu->setPosition(bitchsize / 2.f);
-    centermenu->addChild(nineslicemenu);
+    // nineslicemenu->setScale(0.75f);
+    nineslicemenu->setScaleMultiplier(0.67f);
+    layer->addChild(nineslicemenu);
 
     auto background = NineSlice::create(thing::bitch::round);
     background->setColor({0, 0, 0});
