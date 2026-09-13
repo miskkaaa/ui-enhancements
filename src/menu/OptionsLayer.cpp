@@ -136,13 +136,16 @@ class $modify(MyOptionsLayer, OptionsLayer) {
 
             if (musicToggle) {
                 musicToggle->setScale(0.75f);  
-                auto winSize = CCDirector::get()->getWinSize();  
+                auto winSize = CCDirector::get()->getWinSize();
+                // auto size = CCDirector::get()->getVisibleSize();
+                CCSize layerSize = targetLayer->getContentSize();
+                CCPoint center = layerSize / 2.f;
 
-                float bottomMargin = 95.5f * 4;
-                // float leftMargin = 120.f + UIScaling::getSafeOffset().x;
-                // float bottomMargin = (winSize.height / 2.f);
-                float leftMargin = (winSize.width / 2.f) / 2.3f;
-                CCPoint toggleWorldPos = {leftMargin, bottomMargin};
+                float toggleX = center.x - 160.f;
+                float toggleY = center.y - 100.f;
+
+                CCPoint togglePos = { toggleX, toggleY };
+                CCPoint toggleWorldPos = targetLayer->convertToWorldSpace(togglePos);
 
                 if (auto parent = musicToggle->getParent()) {
                     musicToggle->setPosition(parent->convertToNodeSpace(toggleWorldPos));
@@ -152,13 +155,14 @@ class $modify(MyOptionsLayer, OptionsLayer) {
 
                 if (musicToggleLabelNode) {
                     if (auto label = typeinfo_cast<CCLabelBMFont*>(musicToggleLabelNode)) {
-                        label->setString("Menu Music"); // cant do shit otherwise
+                        label->setString("Menu Music");
                     }
 
                     musicToggleLabelNode->setAnchorPoint({0.f, 0.5f});
                     musicToggleLabelNode->setScale(0.35f);
+
                     float toggleWidth = musicToggle->getScaledContentWidth();
-                    CCPoint labelWorldPos = {toggleWorldPos.x + (toggleWidth / 2.f) + 8.f, bottomMargin};
+                    CCPoint labelWorldPos = {toggleWorldPos.x + (toggleWidth / 2.f) + 8.f, toggleWorldPos.y};
 
                     if (auto parent = musicToggleLabelNode->getParent()) {
                         musicToggleLabelNode->setPosition(parent->convertToNodeSpace(labelWorldPos));

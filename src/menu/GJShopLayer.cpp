@@ -75,7 +75,8 @@ class $modify(MyShopLayer, GJShopLayer) {
             scroll->setVerticalScroll(false);
             scroll->setDraggingEnabled(true);
             scroll->setTouchPriority(-500);
-
+            log::info("{}, {}", winSize.width, winSize.height);
+            log::info("bullshit {}", -(winSize.width / 2.f));
             auto content = scroll->getContentLayer();
             auto layout = RowLayout::create()
                 ->setAxisReverse(false)
@@ -83,8 +84,8 @@ class $modify(MyShopLayer, GJShopLayer) {
                 ->setCrossAxisAlignment(AxisAlignment::Between)
                 ->setCrossAxisLineAlignment(AxisAlignment::Even)
                 // ->setGap(-230.0f) // was -175.0f
-                ->setGap(-(winSize.width / 2.5f))
-                ->setPadding({-113.0f, -151.0f, -434.0f, -114.0f})
+                ->setGap(-(winSize.width / 2.f))
+                ->setPadding({-113.0f, -((winSize.height / 2) - 8), -434.0f, -114.0f})
                 ->setAutoScale(true)
                 ->setGrowCrossAxis(true)
                 ->ignoreInvisibleChildren(false)

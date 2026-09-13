@@ -88,6 +88,17 @@ void UIPauseLayer::onPause(PauseLayer *pause) {
     auto practicebar = layer->getChildByID("practice-progress-bar");
     auto pbsize = practicebar->getContentSize();
 
+    auto controllerplay = layer->getChildByID("controller-play-hint");
+    auto controllerback = layer->getChildByID("controller-back-hint");
+    auto controllerprac = layer->getChildByID("controller-practice-hint");
+
+    if (controllerplay) {
+        controllerplay->setPositionX(controllerplay->getPositionX() + 12.5f);
+        controllerplay->setPositionY(controllerplay->getPositionY() + 2.5f);
+        controllerplay->setScale(0.750f);
+    }
+    // TODO: finish the fucking rest
+
     // centermenu->setScale(0.750f);
     centermenu->setPositionY(centermenu->getPositionY() + 5.f); // centermenu->setPosition({centermenu->getPositionX(), centermenu->getPositionY() + 5.f});
     centermenu->setContentSize({pbsize.width, centermenu->getContentSize().height});

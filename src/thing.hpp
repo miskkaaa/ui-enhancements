@@ -37,7 +37,7 @@ namespace thing {
     }
 
     inline bool IsTinkerInstalled() {
-        if (auto mod = Loader::get()->getInstalledMod("alphalaneous.tinker")) {
+        if (auto mod = Loader::get()->getLoadedMod("alphalaneous.tinker")) {
             return true;
         } else {
             return false;
